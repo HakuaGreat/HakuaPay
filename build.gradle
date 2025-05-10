@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+
+        // As of Gradle 5.1, you can limit this to only those
+        // dependencies you expect from it
+        content {
+            includeGroup 'org.bukkit'
+            includeGroup 'org.spigotmc'
+        }
+    }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+    maven { url = 'https://jitpack.io' } // Vault API
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.21.5-R0.1-SNAPSHOT'
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    implementation 'org.xerial:sqlite-jdbc:3.49.1.0'
+    implementation 'org.yaml:snakeyaml:1.17'
+    // Guava の指定
+    implementation 'com.google.guava:guava:33.3.1-jre'
+
+    // Gson の指定
+    implementation 'com.google.code.gson:gson:2.11.0'
+
+    // Error Prone の指定
+    implementation 'com.google.errorprone:error_prone_annotations:2.28.0'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    archiveBaseName.set("MyEconomyPlugin")
+    destinationDirectory.set(file("build"))
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        // Guava のバージョンを強制
+        force 'com.google.guava:guava:33.3.1-jre'
+
+        // Gson のバージョンを強制
+        force 'com.google.code.gson:gson:2.11.0'
+
+        // Error Prone のバージョンを強制
+        force 'com.google.errorprone:error_prone_annotations:2.28.0'
+    }
+}

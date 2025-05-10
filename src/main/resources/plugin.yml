@@ -1,0 +1,29 @@
+name: HakuaPay
+main: jp.hakuaserver.hakuapay.HakuaPay
+version: 1.0
+api-version: 1.21
+depend: [Vault]
+commands:
+  money:
+    description: プレイヤーの残高を表示します。
+  pay:
+    description: 他のプレイヤーにお金を送ります。
+    usage: /pay <player> <amount>
+  setmoney:
+    description: プレイヤーの残高を設定します。
+    usage: /setmoney <player> <amount>
+    permission: hakuapay.admin
+
+permissions:
+    hakuapay.admin:
+        description: 管理者権限
+        default: op
+    hakuapay.user:
+        description: ユーザー権限
+        default: true
+    hakuapay.command.money:
+        description: 残高確認コマンドの実行を許可します。
+        default: true
+    hakuapay.command.pay:
+        description: お金を送るコマンドの実行を許可します。
+        default: true

@@ -1,0 +1,81 @@
+package jp.hakuaserver.hakuapay;
+
+import java.io.File;
+import java.sql.*;
+import java.util.UUID;
+
+public class DatabaseManager {
+    private Connection conn;
+
+    public void connect() throws SQLException {
+        File dbDir = new File("plugins/hakuapay");
+        if (!dbDir.exists()) {
+            dbDir.mkdirs();  // フォルダを自動で作成
+        }
+        conn = DriverManager.getConnection("jdbc:sqlite:plugins/hakuapay/data.db");
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS balances (uuid TEXT PRIMARY KEY, balance DOUBLE)");
+        }
+    }
+
+    public void close() {
+        try {
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public double getBalance(UUID uuid) {
+        try (PreparedStatement ps = conn.prepareStatement("SELECT balance FROM balances WHERE uuid = ?")) {
+            ps.setString(1, uuid.toString());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getDouble("balance");
+            setBalance(uuid, 0);
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public void setBalance(UUID uuid, double balance) {
+        try (PreparedStatement ps = conn.prepareStatement("REPLACE INTO balances (uuid, balance) VALUES (?, ?)")) {
+            ps.setString(1, uuid.toString());
+            ps.setDouble(2, balance);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean addBalance(UUID uuid, double amount) {
+        double current = getBalance(uuid);
+        setBalance(uuid, current + amount);
+        return true;
+    }
+
+    public boolean deposit(UUID uuid, double amount) {
+        double newBalance = getBalance(uuid) + amount;
+        setBalance(uuid, newBalance);
+        return true;
+    }
+
+    public boolean subtractBalance(UUID uuid, double amount) {
+        double current = getBalance(uuid);
+        if (current < amount) return false;
+        setBalance(uuid, current - amount);
+        return true;
+    }
+
+    public boolean withdraw(UUID uuid, double amount) {
+        double current = getBalance(uuid);
+        if (current < amount) return false;
+        setBalance(uuid, current - amount);
+        return true;
+    }
+
+    public boolean has(UUID uuid, double amount) {
+        return getBalance(uuid) >= amount;
+    }
+}
