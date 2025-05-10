@@ -44,7 +44,7 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
         getCommand("setmoney").setExecutor(this);
         getCommand("money").setExecutor(this);
         getCommand("pay").setExecutor(this);
-        getLogger().info("MyEconomyPlugin が有効になりました。");
+        getLogger().info("HakuaPay が有効になりました。");
     }
 
     private boolean setupEconomy() {
@@ -66,7 +66,7 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
             databaseManager.close();
             getLogger().info("データベース接続を閉じました。");
         }
-        getLogger().info("MyEconomyPlugin が無効になりました。");
+        getLogger().info("HakuaPay が無効になりました。");
     }
 
     public static HakuaPay getInstance(){
