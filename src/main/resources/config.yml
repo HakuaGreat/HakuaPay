@@ -1,0 +1,15 @@
+jobs:
+  miner:
+    actions:
+      break:
+        stone: 10
+        diamond_ore: 50
+  crafter:
+    actions:
+      craft:
+        diamond_sword: 100
+  hunter:
+    actions:
+      kill:
+        zombie: 20
+        creeper: 30

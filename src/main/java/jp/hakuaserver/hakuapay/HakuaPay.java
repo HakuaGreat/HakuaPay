@@ -22,6 +22,8 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+        reloadConfig();
         if (!setupEconomy()) {
             getLogger().severe("Vault 経済プラグインが見つかりません。プラグインを無効化します。");
             getServer().getPluginManager().disablePlugin(this);
@@ -44,6 +46,11 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
         getCommand("setmoney").setExecutor(this);
         getCommand("money").setExecutor(this);
         getCommand("pay").setExecutor(this);
+        getCommand("job").setExecutor(new JobCommand());
+        getServer().getPluginManager().registerEvents(new JobRewardListener(databaseManager, getConfig()), this);
+        getCommand("jobmob").setExecutor(new JobMobCommand());
+        getServer().getPluginManager().registerEvents(new JobMobListener(), this);
+        getServer().getPluginManager().registerEvents(new JobGUIListener(), this);
         getLogger().info("HakuaPay が有効になりました。");
     }
 
@@ -75,7 +82,6 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
     public static DatabaseManager getDatabaseManager() {
         return databaseManager;
     }
-
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

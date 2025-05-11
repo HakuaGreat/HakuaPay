@@ -78,4 +78,26 @@ public class DatabaseManager {
     public boolean has(UUID uuid, double amount) {
         return getBalance(uuid) >= amount;
     }
+
+    public void setJob(UUID uuid, String job) {
+        try (PreparedStatement ps = conn.prepareStatement("REPLACE INTO balances (uuid, job) VALUES (?, ?)")) {
+            ps.setString(1, uuid.toString());
+            ps.setString(2, job);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getJob(UUID uuid) {
+        try (PreparedStatement ps = conn.prepareStatement("SELECT job FROM balances WHERE uuid = ?")) {
+            ps.setString(1, uuid.toString());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getString("job");
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

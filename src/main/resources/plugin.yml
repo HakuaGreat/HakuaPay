@@ -13,6 +13,13 @@ commands:
     description: プレイヤーの残高を設定します。
     usage: /setmoney <player> <amount>
     permission: hakuapay.admin
+  job:
+    description: プレイヤーの職業を設定します。
+    usage: /job <player> <job>
+    permission: hakuapay.command.job
+  jobmob:
+    description: プレイヤーモブを生成します。
+    usage: /jobmob <職業名> <スキン名>
 
 permissions:
     hakuapay.admin:
@@ -26,4 +33,7 @@ permissions:
         default: true
     hakuapay.command.pay:
         description: お金を送るコマンドの実行を許可します。
+        default: true
+    hakuapay.command.job:
+        description: 職業を設定するコマンドの実行を許可します。
         default: true
