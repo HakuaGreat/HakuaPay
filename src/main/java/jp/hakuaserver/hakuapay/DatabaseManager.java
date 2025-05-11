@@ -52,7 +52,7 @@ public class DatabaseManager {
 
     public boolean addBalance(UUID uuid, int amount) {
         double current = getBalance(uuid);
-        setBalance(uuid, current + amount);
+        setBalance(uuid, (int) (current + amount));
         return true;
     }
 
