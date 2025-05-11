@@ -119,9 +119,9 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
                     return true;
                 }
 
-                double amount;
+                int amount;
                 try {
-                    amount = Double.parseDouble(args[1]);
+                    amount = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
                     player.sendMessage("金額が無効です。");
                     return true;
@@ -159,9 +159,9 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
                     return true;
                 }
 
-                double setAmount;
+                int setAmount;
                 try {
-                    setAmount = Double.parseDouble(args[1]);
+                    setAmount = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
                     player.sendMessage("金額が無効です。");
                     return true;

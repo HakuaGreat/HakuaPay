@@ -53,7 +53,7 @@ public class VaultEconomyProvider implements Economy {
 
     @Override
     public boolean has(OfflinePlayer player, double amount) {
-        return db.has(player.getUniqueId(), amount);
+        return db.has(player.getUniqueId(), (int) amount);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class VaultEconomyProvider implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
-        if (!db.withdraw(player.getUniqueId(), amount)) {
+        if (!db.withdraw(player.getUniqueId(), (int) amount)) {
             return new EconomyResponse(0, getBalance(player), EconomyResponse.ResponseType.FAILURE, "残高不足");
         }
         return new EconomyResponse(amount, getBalance(player), EconomyResponse.ResponseType.SUCCESS, null);
@@ -86,7 +86,7 @@ public class VaultEconomyProvider implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-        db.deposit(player.getUniqueId(), amount);
+        db.deposit(player.getUniqueId(), (int) amount);
         return new EconomyResponse(amount, getBalance(player), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
