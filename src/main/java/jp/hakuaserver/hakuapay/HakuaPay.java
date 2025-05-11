@@ -53,18 +53,9 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
             getServer().getServicesManager().register(Economy.class, new VaultEconomyProvider(databaseManager), this, ServicePriority.Normal);
             getLogger().info("Vault 経済プロバイダーとして登録しました。");
 
-            getCommand("setmoney").setExecutor(this);
-            getCommand("money").setExecutor(this);
-            getCommand("pay").setExecutor(this);
+            getCommand("hakuapay").setExecutor(new HakuaPayCommand());
             getCommand("job").setExecutor(new JobCommand());
-            getCommand("removenpc").setExecutor(new RemoveNPCCommand());
-            getCommand("checkjob").setExecutor(new CheckJobCommand());
-            getCommand("addjob").setExecutor(new AddJobCommand());
-            getCommand("editjob").setExecutor(new EditJobCommand());
-            getCommand("addmoney").setExecutor(new AddMoneyCommand());
             getServer().getPluginManager().registerEvents(new JobRewardListener(databaseManager, getConfig()), this);
-            getCommand("jobmob").setExecutor(new JobMobCommand());
-            getServer().getPluginManager().registerEvents(new JobMobListener(getConfig()), this);
             getServer().getPluginManager().registerEvents(new JobGUIListener(), this);
 
             getLogger().info("HakuaPay が有効になりました。");

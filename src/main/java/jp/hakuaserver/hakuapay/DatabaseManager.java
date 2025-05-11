@@ -14,7 +14,7 @@ public class DatabaseManager {
         }
         conn = DriverManager.getConnection("jdbc:sqlite:plugins/hakuapay/data.db");
         try (Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS balances (uuid TEXT PRIMARY KEY, balance DOUBLE, job TEXT)");
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS balances (uuid TEXT PRIMARY KEY, balance INTEGER, job TEXT)");
         }
     }
 
@@ -26,11 +26,11 @@ public class DatabaseManager {
         }
     }
 
-    public double getBalance(UUID uuid) {
+    public int getBalance(UUID uuid) {
         try (PreparedStatement ps = conn.prepareStatement("SELECT balance FROM balances WHERE uuid = ?")) {
             ps.setString(1, uuid.toString());
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) return rs.getDouble("balance");
+            if (rs.next()) return rs.getInt("balance");
             setBalance(uuid, 0);
             return 0;
         } catch (SQLException e) {
@@ -39,10 +39,10 @@ public class DatabaseManager {
         }
     }
 
-    public void setBalance(UUID uuid, double balance) {
+    public void setBalance(UUID uuid, int balance) {
         try (PreparedStatement ps = conn.prepareStatement("REPLACE INTO balances (uuid, balance, job) VALUES (?, ?, COALESCE((SELECT job FROM balances WHERE uuid = ?), NULL))")) {
             ps.setString(1, uuid.toString());
-            ps.setDouble(2, balance);
+            ps.setInt(2, balance);
             ps.setString(3, uuid.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -50,33 +50,33 @@ public class DatabaseManager {
         }
     }
 
-    public boolean addBalance(UUID uuid, double amount) {
+    public boolean addBalance(UUID uuid, int amount) {
         double current = getBalance(uuid);
         setBalance(uuid, current + amount);
         return true;
     }
 
-    public boolean deposit(UUID uuid, double amount) {
-        double newBalance = getBalance(uuid) + amount;
+    public boolean deposit(UUID uuid, int amount) {
+        int newBalance = getBalance(uuid) + amount;
         setBalance(uuid, newBalance);
         return true;
     }
 
-    public boolean subtractBalance(UUID uuid, double amount) {
-        double current = getBalance(uuid);
+    public boolean subtractBalance(UUID uuid, int amount) {
+        int current = getBalance(uuid);
         if (current < amount) return false;
         setBalance(uuid, current - amount);
         return true;
     }
 
-    public boolean withdraw(UUID uuid, double amount) {
-        double current = getBalance(uuid);
+    public boolean withdraw(UUID uuid, int amount) {
+        int current = getBalance(uuid);
         if (current < amount) return false;
         setBalance(uuid, current - amount);
         return true;
     }
 
-    public boolean has(UUID uuid, double amount) {
+    public boolean has(UUID uuid, int amount) {
         return getBalance(uuid) >= amount;
     }
 

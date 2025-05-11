@@ -30,7 +30,7 @@ public class JobRewardListener implements Listener {
         if (job == null) return;
 
         Material block = event.getBlock().getType();
-        double reward = config.getDouble("jobs." + job + ".actions.break." + block.name().toLowerCase(), 0);
+        int reward = config.getInt("jobs." + job + ".actions.break." + block.name().toLowerCase(), 0);
         if (reward > 0) {
             db.addBalance(player.getUniqueId(), reward);
             player.sendMessage("§a" + block.name() + " を壊して " + reward + " 円を獲得しました！");
@@ -45,7 +45,7 @@ public class JobRewardListener implements Listener {
         if (job == null) return;
 
         EntityType entity = event.getEntityType();
-        double reward = config.getDouble("jobs." + job + ".actions.kill." + entity.name().toLowerCase(), 0);
+        int reward = config.getInt("jobs." + job + ".actions.kill." + entity.name().toLowerCase(), 0);
         if (reward > 0) {
             db.addBalance(player.getUniqueId(), reward);
             player.sendMessage("§a" + entity.name() + " を倒して " + reward + " 円を獲得しました！");
@@ -60,10 +60,42 @@ public class JobRewardListener implements Listener {
         if (job == null) return;
 
         Material item = event.getRecipe().getResult().getType();
-        double reward = config.getDouble("jobs." + job + ".actions.craft." + item.name().toLowerCase(), 0);
+        int reward = config.getInt("jobs." + job + ".actions.craft." + item.name().toLowerCase(), 0);
         if (reward > 0) {
             db.addBalance(player.getUniqueId(), reward);
             player.sendMessage("§a" + item.name() + " を作成して " + reward + " 円を獲得しました！");
+        }
+    }
+
+    @EventHandler
+    public void onItemSmelt(org.bukkit.event.inventory.FurnaceExtractEvent event) {
+        Player player = event.getPlayer();
+        String job = db.getJob(player.getUniqueId());
+        if (job == null) return;
+
+        Material item = event.getItemType();
+        int reward = config.getInt("jobs." + job + ".actions.smelt." + item.name().toLowerCase(), 0);
+        if (reward > 0) {
+            db.addBalance(player.getUniqueId(), reward);
+            player.sendMessage("§a" + item.name() + " を精錬して " + reward + " 円を獲得しました！");
+        }
+    }
+
+    @EventHandler
+    public void onPlayerFish(org.bukkit.event.player.PlayerFishEvent event) {
+        if (event.getState() != org.bukkit.event.player.PlayerFishEvent.State.CAUGHT_FISH) return;
+
+        Player player = event.getPlayer();
+        String job = db.getJob(player.getUniqueId());
+        if (job == null) return;
+
+        if (event.getCaught() instanceof org.bukkit.entity.Item caughtItem) {
+            Material item = caughtItem.getItemStack().getType();
+            int reward = config.getInt("jobs." + job + ".actions.fish." + item.name().toLowerCase(), 0);
+            if (reward > 0) {
+                db.addBalance(player.getUniqueId(), reward);
+                player.sendMessage("§a" + item.name() + " を釣り上げて " + reward + " 円を獲得しました！");
+            }
         }
     }
 }
