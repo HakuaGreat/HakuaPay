@@ -19,7 +19,7 @@ commands:
     permission: hakuapay.command.job
   jobmob:
     description: プレイヤーモブを生成します。
-    usage: /jobmob <職業名> <スキン名>
+    usage: /jobmob <名前> <スキン名>
 
 permissions:
     hakuapay.admin:

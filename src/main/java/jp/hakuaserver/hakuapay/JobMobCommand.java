@@ -2,7 +2,6 @@ package jp.hakuaserver.hakuapay;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.api.trait.Trait;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,38 +18,22 @@ public class JobMobCommand implements CommandExecutor {
         }
 
         if (args.length != 2) {
-            player.sendMessage("§c使い方: /jobmob <職業名> <スキン名>");
+            player.sendMessage("§c使い方: /jobmob <名前> <スキン名>");
             return true;
         }
 
-        String job = args[0];
+        String mobName = args[0];
         String skinName = args[1];
         Location location = player.getLocation();
 
         // NPCを生成
-        NPC npc = CitizensAPI.getNPCRegistry().createNPC(org.bukkit.entity.EntityType.PLAYER, "§a職業: " + job);
+        NPC npc = CitizensAPI.getNPCRegistry().createNPC(org.bukkit.entity.EntityType.PLAYER, mobName);
         npc.spawn(location);
 
         // スキンを適用
         npc.data().setPersistent("player-skin-name", skinName);
 
-        // 職業情報をTraitに保存
-        npc.addTrait(new JobTrait(job));
-
-        player.sendMessage("§a職業 " + job + " を与えるプレイヤーモブを生成しました！");
+        player.sendMessage("§a名前 " + mobName + "、スキン " + skinName + " のプレイヤーモブを生成しました！");
         return true;
-    }
-
-    public static class JobTrait extends Trait {
-        private final String job;
-
-        public JobTrait(String job) {
-            super("JobTrait");
-            this.job = job;
-        }
-
-        public String getJob() {
-            return job;
-        }
     }
 }

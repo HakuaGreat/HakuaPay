@@ -49,7 +49,7 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
         getCommand("job").setExecutor(new JobCommand());
         getServer().getPluginManager().registerEvents(new JobRewardListener(databaseManager, getConfig()), this);
         getCommand("jobmob").setExecutor(new JobMobCommand());
-        getServer().getPluginManager().registerEvents(new JobMobListener(), this);
+        getServer().getPluginManager().registerEvents(new JobMobListener(getConfig()), this);
         getServer().getPluginManager().registerEvents(new JobGUIListener(), this);
         getLogger().info("HakuaPay が有効になりました。");
     }
