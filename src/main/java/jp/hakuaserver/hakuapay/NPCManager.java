@@ -14,7 +14,9 @@ public class NPCManager implements Listener{
     public static void createJobNPC(String npcName, String skinName, Location location) {
         NPC npc = CitizensAPI.getNPCRegistry().createNPC(org.bukkit.entity.EntityType.PLAYER, npcName);
         npc.spawn(location);
-        npc.data().setPersistent("player-skin-name", skinName); // スキンを設定
+
+        // スキンを設定
+        npc.getOrAddTrait(SkinTrait.class).setSkinName(skinName);
     }
 
     // NPCを削除
@@ -33,10 +35,11 @@ public class NPCManager implements Listener{
         if (!(event.getRightClicked() instanceof Player)) return;
 
         NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getRightClicked());
-        if (npc == null || !npc.getName().equalsIgnoreCase("職業変更NPC")) return;
+        if (npc == null) return; // NPCでない場合は処理を終了
 
         Player player = event.getPlayer();
-        player.performCommand("job gui");
+        player.performCommand("job gui"); // GUIを開くコマンドを実行
     }
 }
+
 
