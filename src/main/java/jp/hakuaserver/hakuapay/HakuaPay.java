@@ -22,36 +22,37 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
-        reloadConfig();
-        if (!setupEconomy()) {
-            getLogger().severe("Vault 経済プラグインが見つかりません。プラグインを無効化します。");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-
-
-        databaseManager = new DatabaseManager();
         try {
+            saveDefaultConfig();
+            reloadConfig();
+            if (!setupEconomy()) {
+                getLogger().severe("Vault 経済プラグインが見つかりません。プラグインを無効化します。");
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
+
+            databaseManager = new DatabaseManager();
             databaseManager.connect();
             getLogger().info("データベースに接続しました。");
-        } catch (SQLException e) {
+
+            getServer().getServicesManager().register(Economy.class, new VaultEconomyProvider(databaseManager), this, ServicePriority.Normal);
+            getLogger().info("Vault 経済プロバイダーとして登録しました。");
+
+            getCommand("setmoney").setExecutor(this);
+            getCommand("money").setExecutor(this);
+            getCommand("pay").setExecutor(this);
+            getCommand("job").setExecutor(new JobCommand());
+            getServer().getPluginManager().registerEvents(new JobRewardListener(databaseManager, getConfig()), this);
+            getCommand("jobmob").setExecutor(new JobMobCommand());
+            getServer().getPluginManager().registerEvents(new JobMobListener(getConfig()), this);
+            getServer().getPluginManager().registerEvents(new JobGUIListener(), this);
+
+            getLogger().info("HakuaPay が有効になりました。");
+        } catch (Exception e) {
+            getLogger().severe("プラグインの起動中にエラーが発生しました: " + e.getMessage());
             e.printStackTrace();
-            getLogger().severe("デ ータベース接続に失敗しました。プラグインを無効化します。");
             getServer().getPluginManager().disablePlugin(this);
-            return;
         }
-        getServer().getServicesManager().register(Economy.class, new VaultEconomyProvider(databaseManager), this, ServicePriority.Normal);
-        getLogger().info("Vault 経済プロバイダーとして登録しました。");
-        getCommand("setmoney").setExecutor(this);
-        getCommand("money").setExecutor(this);
-        getCommand("pay").setExecutor(this);
-        getCommand("job").setExecutor(new JobCommand());
-        getServer().getPluginManager().registerEvents(new JobRewardListener(databaseManager, getConfig()), this);
-        getCommand("jobmob").setExecutor(new JobMobCommand());
-        getServer().getPluginManager().registerEvents(new JobMobListener(getConfig()), this);
-        getServer().getPluginManager().registerEvents(new JobGUIListener(), this);
-        getLogger().info("HakuaPay が有効になりました。");
     }
 
     private boolean setupEconomy() {
