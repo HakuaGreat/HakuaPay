@@ -23,9 +23,23 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
     @Override
     public void onEnable() {
         getLogger().info("HakuaPay: onEnable メソッドが呼び出されました。");
+
         try {
-            saveDefaultConfig();
+            // HakuaPayフォルダを作成
+            File pluginFolder = new File(getDataFolder().getPath());
+            if (!pluginFolder.exists()) {
+                pluginFolder.mkdirs();
+            }
+
+            // config.ymlを生成
+            File configFile = new File(pluginFolder, "config.yml");
+            if (!configFile.exists()) {
+                saveDefaultConfig(); // デフォルトのconfig.ymlをコピー
+                getLogger().info("config.yml を生成しました。");
+            }
+
             reloadConfig();
+
             if (!setupEconomy()) {
                 getLogger().severe("Vault 経済プラグインが見つかりません。プラグインを無効化します。");
                 getServer().getPluginManager().disablePlugin(this);
@@ -44,6 +58,9 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
             getCommand("pay").setExecutor(this);
             getCommand("job").setExecutor(new JobCommand());
             getCommand("removenpc").setExecutor(new RemoveNPCCommand());
+            getCommand("checkjob").setExecutor(new CheckJobCommand());
+            getCommand("addjob").setExecutor(new AddJobCommand());
+            getCommand("editjob").setExecutor(new EditJobCommand());
             getServer().getPluginManager().registerEvents(new JobRewardListener(databaseManager, getConfig()), this);
             getCommand("jobmob").setExecutor(new JobMobCommand());
             getServer().getPluginManager().registerEvents(new JobMobListener(getConfig()), this);
