@@ -5,6 +5,7 @@ api-version: 1.21
 depend: [Vault, Citizens]
 commands:
   hakuapay:
+    aliases: [hkp]
     description: お金関連のコマンド
     usage: /hakuapay <add|set|check|send> <player> <amount>
     permission: hakuapay.admin
