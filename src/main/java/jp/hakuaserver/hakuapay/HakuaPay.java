@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import java.io.File;
 
 import java.sql.SQLException;
 import java.util.UUID;
@@ -23,7 +24,6 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
     @Override
     public void onEnable() {
         getLogger().info("HakuaPay: onEnable メソッドが呼び出されました。");
-
         try {
             // HakuaPayフォルダを作成
             File pluginFolder = new File(getDataFolder().getPath());
@@ -61,6 +61,7 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
             getCommand("checkjob").setExecutor(new CheckJobCommand());
             getCommand("addjob").setExecutor(new AddJobCommand());
             getCommand("editjob").setExecutor(new EditJobCommand());
+            getCommand("addmoney").setExecutor(new AddMoneyCommand());
             getServer().getPluginManager().registerEvents(new JobRewardListener(databaseManager, getConfig()), this);
             getCommand("jobmob").setExecutor(new JobMobCommand());
             getServer().getPluginManager().registerEvents(new JobMobListener(getConfig()), this);

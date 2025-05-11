@@ -36,6 +36,10 @@ commands:
     description: 職業のアクションを編集します。
     usage: /editjob <職業名> <アクション> <対象> <報酬>
     permission: hakuapay.admin
+  addmoney:
+    description: プレイヤーの所持金を追加します。
+    usage: /addmoney <player> <amount>
+    permission: hakuapay.admin
 
 permissions:
     hakuapay.admin:
