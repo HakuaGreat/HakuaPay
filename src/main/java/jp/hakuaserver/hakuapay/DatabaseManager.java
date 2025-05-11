@@ -14,7 +14,7 @@ public class DatabaseManager {
         }
         conn = DriverManager.getConnection("jdbc:sqlite:plugins/hakuapay/data.db");
         try (Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS balances (uuid TEXT PRIMARY KEY, balance DOUBLE)");
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS balances (uuid TEXT PRIMARY KEY, balance DOUBLE, job TEXT)");
         }
     }
 
@@ -40,9 +40,10 @@ public class DatabaseManager {
     }
 
     public void setBalance(UUID uuid, double balance) {
-        try (PreparedStatement ps = conn.prepareStatement("REPLACE INTO balances (uuid, balance) VALUES (?, ?)")) {
+        try (PreparedStatement ps = conn.prepareStatement("REPLACE INTO balances (uuid, balance, job) VALUES (?, ?, COALESCE((SELECT job FROM balances WHERE uuid = ?), NULL))")) {
             ps.setString(1, uuid.toString());
             ps.setDouble(2, balance);
+            ps.setString(3, uuid.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,9 +81,10 @@ public class DatabaseManager {
     }
 
     public void setJob(UUID uuid, String job) {
-        try (PreparedStatement ps = conn.prepareStatement("REPLACE INTO balances (uuid, job) VALUES (?, ?)")) {
+        try (PreparedStatement ps = conn.prepareStatement("REPLACE INTO balances (uuid, balance, job) VALUES (?, COALESCE((SELECT balance FROM balances WHERE uuid = ?), 0), ?)")) {
             ps.setString(1, uuid.toString());
-            ps.setString(2, job);
+            ps.setString(2, uuid.toString());
+            ps.setString(3, job);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
