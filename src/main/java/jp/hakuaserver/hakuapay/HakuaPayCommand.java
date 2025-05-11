@@ -27,6 +27,7 @@ public class HakuaPayCommand implements TabExecutor {
             case "set" -> handleSetMoney(sender, args);
             case "check" -> handleCheckMoney(sender, args);
             case "send" -> handleSendMoney(sender, args);
+            case "reload" -> handleReloadConfig(sender);
             default -> {
                 sender.sendMessage("§c不明なサブコマンドです: " + subCommand);
                 yield true;
@@ -167,6 +168,18 @@ public class HakuaPayCommand implements TabExecutor {
         target.sendMessage("§a" + player.getName() + " から " + amount + " 円を受け取りました。");
         return true;
     }
+
+    private boolean handleReloadConfig(CommandSender sender) {
+        if (!sender.hasPermission("hakuapay.admin")) {
+            sender.sendMessage("§cこのコマンドを実行する権限がありません。");
+            return true;
+        }
+
+        HakuaPay.getInstance().reloadConfig();
+        sender.sendMessage("§a設定ファイルをリロードしました。");
+        return true;
+    }
+
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {

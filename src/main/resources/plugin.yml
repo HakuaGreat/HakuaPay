@@ -7,7 +7,7 @@ commands:
   hakuapay:
     aliases: [hkp]
     description: お金関連のコマンド
-    usage: /hakuapay <add|set|check|send> <player> <amount>
+    usage: /hakuapay <add|set|check|send|reload> <player> <amount>
     permission: hakuapay.admin
   job:
     description: 職業関連のコマンド
@@ -34,6 +34,9 @@ permissions:
     hakuapay.sendmoney:
       description: お金を送金する権限
       default: true
+    hakuapay.reload:
+      description: プラグインをリロードする権限
+      default: op
     job.use:
       description: 職業コマンドを使用する基本権限
       default: true

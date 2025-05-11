@@ -24,6 +24,7 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
 
     @Override
     public void onEnable() {
+        instance = this;
         getLogger().info("HakuaPay: onEnable メソッドが呼び出されました。");
         try {
             // HakuaPayフォルダを作成
@@ -91,6 +92,9 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
     }
 
     public static HakuaPay getInstance(){
+        if (instance == null) {
+            throw new IllegalStateException("HakuaPay instance is not initialized yet!");
+        }
         return instance;
     }
     public static DatabaseManager getDatabaseManager() {
