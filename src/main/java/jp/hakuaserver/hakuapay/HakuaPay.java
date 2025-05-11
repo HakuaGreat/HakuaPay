@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -57,6 +58,7 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
             getCommand("job").setExecutor(new JobCommand());
             getServer().getPluginManager().registerEvents(new JobRewardListener(databaseManager, getConfig()), this);
             getServer().getPluginManager().registerEvents(new JobGUIListener(), this);
+            getServer().getPluginManager().registerEvents(new NPCManager(), this);
 
             getLogger().info("HakuaPay が有効になりました。");
         } catch (Exception e) {
