@@ -2,7 +2,7 @@ name: HakuaPay
 main: jp.hakuaserver.hakuapay.HakuaPay
 version: 1.0
 api-version: 1.21
-depend: [Vault]
+depend: [Vault, Citizens]
 commands:
   money:
     description: プレイヤーの残高を表示します。
@@ -20,6 +20,10 @@ commands:
   jobmob:
     description: プレイヤーモブを生成します。
     usage: /jobmob <名前> <スキン名>
+  removenpc:
+    description: NPCを削除します。
+    usage: /removenpc <NPC名>
+    permission: hakuapay.admin
 
 permissions:
     hakuapay.admin:

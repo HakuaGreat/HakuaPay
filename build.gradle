@@ -38,7 +38,7 @@ dependencies {
 
     // Error Prone の指定
     implementation 'com.google.errorprone:error_prone_annotations:2.28.0'
-    implementation 'net.citizensnpcs:citizens-main:2.0.38-SNAPSHOT'
+    compileOnly 'net.citizensnpcs:citizens-main:2.0.38-SNAPSHOT'
 }
 
 tasks.withType(JavaCompile).configureEach {

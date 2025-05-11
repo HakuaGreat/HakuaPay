@@ -22,6 +22,7 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
 
     @Override
     public void onEnable() {
+        getLogger().info("HakuaPay: onEnable メソッドが呼び出されました。");
         try {
             saveDefaultConfig();
             reloadConfig();
@@ -42,6 +43,7 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
             getCommand("money").setExecutor(this);
             getCommand("pay").setExecutor(this);
             getCommand("job").setExecutor(new JobCommand());
+            getCommand("removenpc").setExecutor(new RemoveNPCCommand());
             getServer().getPluginManager().registerEvents(new JobRewardListener(databaseManager, getConfig()), this);
             getCommand("jobmob").setExecutor(new JobMobCommand());
             getServer().getPluginManager().registerEvents(new JobMobListener(getConfig()), this);

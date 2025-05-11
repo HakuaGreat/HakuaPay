@@ -28,8 +28,13 @@ public class JobMobListener implements Listener {
         if (!CitizensAPI.getNPCRegistry().isNPC(event.getRightClicked())) return;
 
         NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getRightClicked());
-
         Player player = event.getPlayer();
+
+        // スキン名を取得
+        String skinName = config.getString("npc-skins." + npc.getName());
+        if (skinName != null && !skinName.isEmpty()) {
+            npc.data().setPersistent("player-skin", skinName); // スキンを設定
+        }
 
         // GUIを作成
         Inventory gui = Bukkit.createInventory(null, 27, "§a職業を選択してください");
