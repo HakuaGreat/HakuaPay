@@ -26,15 +26,21 @@ public class JobRewardListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        String job = db.getJob(player.getUniqueId());
-        if (job == null) return;
+        UUID playerId = player.getUniqueId();
+
+        // デバッグ: 職業を取得
+        String job = db.getJob(playerId);
+        if (job == null) {
+            player.sendMessage("§c職業が設定されていません。");
+            return;
+        }
 
         Material block = event.getBlock().getType();
         int reward = config.getInt("jobs." + job + ".actions.break." + block.name().toLowerCase(), 0);
-        if (reward > 0) {
-            db.addBalance(player.getUniqueId(), reward);
-            player.sendMessage("§a" + block.name() + " を壊して " + reward + " 円を獲得しました！");
-        }
+
+
+        // 報酬を追加
+        db.addBalance(playerId, reward);
     }
 
     @EventHandler
@@ -48,7 +54,6 @@ public class JobRewardListener implements Listener {
         int reward = config.getInt("jobs." + job + ".actions.kill." + entity.name().toLowerCase(), 0);
         if (reward > 0) {
             db.addBalance(player.getUniqueId(), reward);
-            player.sendMessage("§a" + entity.name() + " を倒して " + reward + " 円を獲得しました！");
         }
     }
 
@@ -63,7 +68,6 @@ public class JobRewardListener implements Listener {
         int reward = config.getInt("jobs." + job + ".actions.craft." + item.name().toLowerCase(), 0);
         if (reward > 0) {
             db.addBalance(player.getUniqueId(), reward);
-            player.sendMessage("§a" + item.name() + " を作成して " + reward + " 円を獲得しました！");
         }
     }
 
@@ -77,7 +81,6 @@ public class JobRewardListener implements Listener {
         int reward = config.getInt("jobs." + job + ".actions.smelt." + item.name().toLowerCase(), 0);
         if (reward > 0) {
             db.addBalance(player.getUniqueId(), reward);
-            player.sendMessage("§a" + item.name() + " を精錬して " + reward + " 円を獲得しました！");
         }
     }
 
@@ -94,7 +97,6 @@ public class JobRewardListener implements Listener {
             int reward = config.getInt("jobs." + job + ".actions.fish." + item.name().toLowerCase(), 0);
             if (reward > 0) {
                 db.addBalance(player.getUniqueId(), reward);
-                player.sendMessage("§a" + item.name() + " を釣り上げて " + reward + " 円を獲得しました！");
             }
         }
     }

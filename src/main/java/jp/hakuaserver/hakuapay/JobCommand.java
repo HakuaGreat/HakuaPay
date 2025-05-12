@@ -89,8 +89,9 @@ public class JobCommand implements TabExecutor {
             return true;
         }
 
-        String job = JobManager.getPlayerJob(player.getUniqueId());
-        if (job == null) {
+        // データベースから職業を取得
+        String job = HakuaPay.getDatabaseManager().getJob(player.getUniqueId());
+        if (job == null || job.isEmpty()) {
             player.sendMessage("§cあなたはまだ職業についていません。");
         } else {
             player.sendMessage("§aあなたの職業: " + job);

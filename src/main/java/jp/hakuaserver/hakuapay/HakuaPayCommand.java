@@ -189,6 +189,7 @@ public class HakuaPayCommand implements TabExecutor {
             if (sender.hasPermission("hakuapay.setmoney")) completions.add("set");
             if (sender.hasPermission("hakuapay.checkmoney")) completions.add("check");
             if (sender.hasPermission("hakuapay.sendmoney")) completions.add("send");
+            if (sender.hasPermission("hakuapay.admin")) completions.add("reload");
         } else if (args.length == 2) {
             Bukkit.getOnlinePlayers().forEach(player -> completions.add(player.getName()));
         }

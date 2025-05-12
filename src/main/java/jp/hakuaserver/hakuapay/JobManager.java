@@ -8,11 +8,6 @@ public class JobManager {
 
     private static final Map<UUID, String> playerJobs = new HashMap<>();
 
-    // プレイヤーの職業を取得
-    public static String getPlayerJob(UUID playerUUID) {
-        return playerJobs.get(playerUUID);
-    }
-
     // プレイヤーの職業を設定
     public static void setPlayerJob(UUID playerUUID, String job) {
         playerJobs.put(playerUUID, job);

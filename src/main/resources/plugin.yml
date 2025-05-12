@@ -8,7 +8,7 @@ commands:
     aliases: [hkp]
     description: お金関連のコマンド
     usage: /hakuapay <add|set|check|send|reload> <player> <amount>
-    permission: hakuapay.admin
+    permission: hakuapay.use
   job:
     description: 職業関連のコマンド
     usage: /job <add|remove|list|myjob|createnpc|deletenpc|addjob|gui>

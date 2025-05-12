@@ -67,6 +67,7 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
             e.printStackTrace();
             getServer().getPluginManager().disablePlugin(this);
         }
+
     }
 
     private boolean setupEconomy() {
