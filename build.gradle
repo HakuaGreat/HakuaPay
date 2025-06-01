@@ -2,13 +2,17 @@ plugins {
     id 'java'
 }
 
-group = 'com.example'
-version = '1.0-SNAPSHOT'
+group = 'jp.hakuaserver'
+version = '1.5'
 
 repositories {
     mavenCentral()
     maven {
         url = "https://repo.citizensnpcs.co/"
+    }
+    maven {
+        name = 'enginehub'
+        url = 'https://maven.enginehub.org/repo/'
     }
     maven {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
@@ -28,17 +32,14 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.21.5-R0.1-SNAPSHOT'
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    compileOnly 'net.citizensnpcs:citizens-main:2.0.38-SNAPSHOT'
+    compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.13'
+    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.3.13'
     implementation 'org.xerial:sqlite-jdbc:3.49.1.0'
     implementation 'org.yaml:snakeyaml:1.17'
-    // Guava の指定
     implementation 'com.google.guava:guava:33.3.1-jre'
-
-    // Gson の指定
     implementation 'com.google.code.gson:gson:2.11.0'
-
-    // Error Prone の指定
     implementation 'com.google.errorprone:error_prone_annotations:2.28.0'
-    compileOnly 'net.citizensnpcs:citizens-main:2.0.38-SNAPSHOT'
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -46,19 +47,14 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 jar {
-    archiveBaseName.set("MyEconomyPlugin")
+    archiveBaseName.set("HakuaPay")
     destinationDirectory.set(file("build"))
 }
 
 configurations.configureEach {
     resolutionStrategy {
-        // Guava のバージョンを強制
         force 'com.google.guava:guava:33.3.1-jre'
-
-        // Gson のバージョンを強制
         force 'com.google.code.gson:gson:2.11.0'
-
-        // Error Prone のバージョンを強制
         force 'com.google.errorprone:error_prone_annotations:2.28.0'
     }
 }

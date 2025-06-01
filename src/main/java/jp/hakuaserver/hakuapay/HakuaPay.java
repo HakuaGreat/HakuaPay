@@ -57,6 +57,7 @@ public class HakuaPay extends JavaPlugin implements CommandExecutor {
 
             getCommand("hakuapay").setExecutor(new HakuaPayCommand());
             getCommand("job").setExecutor(new JobCommand());
+            getCommand("audio").setExecutor(new AudioCommand());
             getServer().getPluginManager().registerEvents(new JobRewardListener(databaseManager, getConfig()), this);
             getServer().getPluginManager().registerEvents(new JobGUIListener(), this);
             getServer().getPluginManager().registerEvents(new NPCManager(), this);
