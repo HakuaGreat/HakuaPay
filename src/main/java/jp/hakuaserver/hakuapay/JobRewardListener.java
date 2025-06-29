@@ -31,7 +31,6 @@ public class JobRewardListener implements Listener {
         // デバッグ: 職業を取得
         String job = db.getJob(playerId);
         if (job == null) {
-            player.sendMessage("§c職業が設定されていません。");
             return;
         }
 
